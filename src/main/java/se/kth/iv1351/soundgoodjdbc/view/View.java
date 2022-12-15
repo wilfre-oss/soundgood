@@ -1,6 +1,8 @@
 package se.kth.iv1351.soundgoodjdbc.view;
 
 import se.kth.iv1351.soundgoodjdbc.controller.Controller;
+import se.kth.iv1351.soundgoodjdbc.integration.SgException;
+import se.kth.iv1351.soundgoodjdbc.model.Instrument;
 
 import java.util.Scanner;
 import java.util.List;
@@ -50,13 +52,21 @@ public class View {
                         keepReceivingCmds = false;
                         break;
                     case NEW:
-                        controller.testConnection();
-                        break;
-                    case DELETE:
+                        try{
+                            String rental = controller.newRental(
+                                    cmdLine.getParameter(0),
+                                    cmdLine.getParameter(1));
+                            System.out.println(rental);
+                        } catch (SgException e) {
+                            e.printStackTrace();
+                        }
 
+                        break;
+                    case TERMINATE:
+                        controller.terminateRental(cmdLine.getParameter(0));
                         break;
                     case LIST:
-
+                        printInstruments(controller.listInstruments(cmdLine.getParameter(0)));
                         break;
                     default:
                         System.out.println("illegal command");
@@ -72,5 +82,30 @@ public class View {
     private String readNextLine() {
         System.out.print(PROMPT);
         return console.nextLine();
+    }
+
+    private void printInstruments(List<Instrument> instruments){
+        System.out.print("+-----+");
+        System.out.print("-----------+");
+        System.out.print("-----------+");
+        System.out.println("--------+");
+        System.out.printf("%1s%5s%1s", "|", "Id", "|");
+        System.out.printf("%11s%1s", "Type", "|");
+        System.out.printf("%11s%1s", "Model", "|");
+        System.out.printf("%8s%1s\n", "Fee", "|");
+        System.out.print("+-----+");
+        System.out.print("-----------+");
+        System.out.print("-----------+");
+        System.out.println("--------+");
+        for(Instrument instrument : instruments){
+            System.out.printf("%1s%5s%1s", "|", instrument.getId(), "|");
+            System.out.printf("%11s%1s", instrument.getType(), "|");
+            System.out.printf("%11s%1s", instrument.getModel(), "|");
+            System.out.printf("%8s%1s\n", instrument.getRentalFee(), "|");
+        }
+        System.out.print("+-----+");
+        System.out.print("-----------+");
+        System.out.print("-----------+");
+        System.out.println("--------+");
     }
 }

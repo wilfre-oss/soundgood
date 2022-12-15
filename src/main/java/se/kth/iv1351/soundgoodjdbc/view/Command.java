@@ -3,9 +3,8 @@ package se.kth.iv1351.soundgoodjdbc.view;
 public enum Command {
 
     NEW,
-    END,
     LIST,
-    DELETE,
+    TERMINATE,
     HELP,
     QUIT,
     ILLEGAL_COMMAND
