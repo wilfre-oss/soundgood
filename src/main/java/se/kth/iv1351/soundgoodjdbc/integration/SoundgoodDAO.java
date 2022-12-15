@@ -18,7 +18,7 @@ public class SoundgoodDAO {
     public SoundgoodDAO(){
        try{
            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/soundgood",
-                   "postgres", "Vattenskoter9");
+                   "postgres", "postgres");
 
            connection.setAutoCommit(false);
            prepareStatements();
